@@ -64,7 +64,6 @@ export class SubscriptionController {
     }
   }
 
-  /** SSE stream at GET /subscribe?token=...&sseToken=... */
   static async stream(
     req: Request,
     res: Response,

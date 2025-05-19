@@ -22,7 +22,6 @@ export function validateSubscriptionDto(
 ): void {
   const { error } = subscriptionSchema.validate(req.body);
   if (error) {
-    // Respond with validation error message and do not call next()
     res.status(400).json({ error: error.details[0].message });
     return;
   }
