@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserSubscription {
+  id                 Int              @id @default(autoincrement())
+  email              String?          
+  token  String?          @unique
+  emailConfirmed     Boolean          @default(false)
+  webhookUrl         String?
+  sseToken           String?
+  city               String
+  interval           Int
+  createdAt          DateTime         @default(now())
+  weatherRecords     WeatherRecord[]  @relation("SubRecords")
+}
+
+model WeatherRecord {
+  id             Int              @id @default(autoincrement())
+  subscriptionId Int
+  data           Json             
+  fetchedAt      DateTime         @default(now())
+  subscription   UserSubscription @relation("SubRecords", fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId])
+}
